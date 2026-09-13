@@ -1,0 +1,25 @@
+HYDRA_FULL_ERROR=1 python scripts/je.py --multirun \
+    ++bstat_name="epps_pulley" \
+    ++bstat_num_slices=512,1024,4096 \
+    ++bstat_t_max=1,3,5 \
+    ++bstat_n_points=5,17,41 \
+    ++backbone="vit_large_patch14_224" \
+    ++dataset_name="inet1k" \
+    ++max_epochs=100 \
+    ++batch_size=512 \
+    ++bstat_lambda=0.05 \
+    ++embedding_dim=512 \
+    ++projector_dim=512 \
+    ++projector_arch="MLP" \
+    ++lr=5e-4 \
+    ++weight_decay=5e-2 \
+    ++teacher_student=true \
+    ++n_views=8 \
+    ++drop_path_rate=0.1 \
+    ++multi_crop=true \
+    ++resolution=238 \
+    ++local_resolution=98 \
+    ++patch_size=14 \
+    ++patch_mask_ratio=0.3 \
+    ++autostop=true
+

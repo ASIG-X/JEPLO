@@ -1,0 +1,49 @@
+{
+  "format": "npz-per-sample",
+  "max_samples_per_model": 10,
+  "sample_probability_per_env_step": 0.05,
+  "policy": {
+    "onnx_file": "../policy.onnx",
+    "sample_dir": "policy",
+    "inputs": [
+      "proprio_hist",
+      "high_feat"
+    ],
+    "outputs": [
+      "actions"
+    ]
+  },
+  "sensor_estimator": {
+    "onnx_file": "../sensor_estimator.onnx",
+    "sample_dir": "sensor_estimator",
+    "inputs": [
+      "prop_hist",
+      "depth_stack",
+      "hidden_in"
+    ],
+    "outputs": [
+      "feature",
+      "hidden_out",
+      "depth_latent",
+      "prop_hist_latent"
+    ]
+  },
+  "notes": [
+    "Each array includes a batch dimension of 1.",
+    "Cases are sampled from random vectorized environments while playing."
+  ],
+  "dimensions": {
+    "num_actions": 12,
+    "policy_proprio_dim": 45,
+    "policy_proprio_hist_dim": 450,
+    "policy_high_feature_dim": 512,
+    "policy_high_feature_latent_dim": 128,
+    "estimator_prop_hist_dim": 450,
+    "estimator_depth_shape": [
+      2,
+      25,
+      60
+    ],
+    "estimator_hidden_dim": 512
+  }
+}

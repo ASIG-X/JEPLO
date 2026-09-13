@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lejepa"
+version = "0.0.1"
+dependencies = ["torch", "numpy", "loguru", "pytest"]
+requires-python = ">=3.8"
+authors = [
+  {name = "Randall Balestriero", email = "randallbalestriero@gmail.com"},
+]
+maintainers = [
+  {name = "Randall Balestriero", email = "randallbalestriero@gmail.com"}
+]
+description = "ToDo"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICEN[CS]E.*"]
+classifiers = [
+  "Programming Language :: Python"
+]
+
+[project.urls]
+Homepage = "https://example.com"
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/me/spam.git"
+"Bug Tracker" = "https://github.com/me/spam/issues"
+Changelog = "https://github.com/me/spam/blob/master/CHANGELOG.md"

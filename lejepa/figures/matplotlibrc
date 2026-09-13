@@ -1,0 +1,14 @@
+font.family: serif
+font.serif: Computer Modern Roman
+font.sans-serif: Computer Modern Sans Serif
+font.monospace: Computer Modern Typewriter
+
+text.usetex: True
+text.latex.preamble: \usepackage{amssymb} \usepackage{amsmath} \usepackage{bm} \usepackage{color} \usepackage{xcolor}
+
+xtick.labelsize: 14
+ytick.labelsize: 14
+legend.fontsize: 14
+axes.labelsize: 16
+axes.titlesize: 16
+axes.formatter.use_mathtext: True
