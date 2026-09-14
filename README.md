@@ -8,6 +8,8 @@
 
 This is a JEPA-based mapless perceptive locomotion for quadrupedal robot (on Unitree Go2). It uses a single Mid-360 LiDAR for perception.
 
+<img src="images/hardware.JPG" alt="Description" width="300">
+
 ## Environment Setup
 
 First create a conda envirnoment, install IsaacLab and IsaacSim:
@@ -229,10 +231,6 @@ With this, you can control the robot moving in MuJoCo.
 ## Deployment on Real Robot: Unitree Go2
 
 For deployment on real robot, we basically reproduce the same environment on Jetson Orin AGX. The only difference is that when flashing with the SDK Manager, CUDA, cuDNN and TensorRT needs to be enabled so that we have those on-board.
-
-This photo shows our hardware setting:
-
-<img src="images/hardware.JPG" alt="Description" width="300">
 
 On Jetson, first build the depth generator following the [previous instructions for sim-to-sim](#build-depth-image-generator).
 
