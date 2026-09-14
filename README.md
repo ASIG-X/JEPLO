@@ -4,7 +4,7 @@
 \[**[Youtube](https://youtu.be/HekLtX37ijs?si=71ovMihlEU9Mnlk_)**\]
 \[**[Website](https://img.shields.io/badge/Website-2563eb?style=flat-square)**\]
 \[**[arXiv](https://img.shields.io/badge/arXiv-b31b1b?style=flat-square)**\]
-\[**[Dataset](https://img.shields.io/badge/Dataset-16803c?style=flat-square)**\]
+\[**[Dataset](https://huggingface.co/datasets/ASIG-Lab/JEPLO-Dataset)**\]
 
 This is a JEPA-based mapless perceptive locomotion for quadrupedal robot (on Unitree Go2). It uses a single Mid-360 LiDAR for perception.
 
