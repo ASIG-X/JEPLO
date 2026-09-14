@@ -2,7 +2,7 @@
 
 <!-- Replace the placeholder destinations with the website, arXiv, and dataset URLs. -->
 \[**[Youtube](https://youtu.be/HekLtX37ijs?si=71ovMihlEU9Mnlk_)**\]
-\[**[Website](https://img.shields.io/badge/Website-2563eb?style=flat-square)**\]
+\[**[Website](https://asig-x.github.io/jeplo_web/)**\]
 \[**[arXiv](https://img.shields.io/badge/arXiv-b31b1b?style=flat-square)**\]
 \[**[Dataset](https://huggingface.co/datasets/ASIG-Lab/JEPLO-Dataset)**\]
 
