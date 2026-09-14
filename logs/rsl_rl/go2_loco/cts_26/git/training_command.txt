@@ -1,5 +1,0 @@
---- working directory ---
-/home/kailaili2/go2_parkour
-
---- command ---
-python scripts/train.py --run_name cts_26 --wandb_proj cts --num_envs 4096 --max_iterations 100000 --cts --student_env_ratio 0.25 --warmup_iters 5000 10000

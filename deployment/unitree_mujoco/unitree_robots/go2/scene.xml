@@ -1,0 +1,245 @@
+<mujoco model="go2 scene">
+  <include file="go2.xml"/>
+
+  <statistic center="0 0 0.1" extent="0.8"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="-130" elevation="-20"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
+      markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane" friction="2.0 0.005 0.0001"/>
+
+    <geom name="obst1" pos="-1.0 1.2 0.15" type="box" size="0.25 0.25 1.0" rgba="0.6 1.0 0.1 1"/>
+    <geom name="obst2" pos="-0.25 1.2 0.15" type="box" size="0.1 0.1 1.2" rgba="0.6 1.0 0.1 1"/>
+
+    <!-- Boxes group: move/rotate by changing this body's pos/euler -->
+    <body name="boxes" pos="3.75 -2.5 -0.1">
+      <geom name="box1" pos="0 0 0.0" type="box" size="0.75 0.75 0.4" rgba="0.55 0.55 0.65 1"/>
+      <geom name="box2" pos="1.5 0 0.4" type="box" size="0.75 0.75 0.4" rgba="0.55 0.55 0.65 1"/>
+    </body>
+
+    <body name="boxes_overhang" pos="3.75 3.0 0.5">
+      <geom name="box3" pos="0 0 0.0" type="box" size="0.75 0.75 0.2" rgba="0.55 0.55 0.65 1"/>
+      <geom name="box4" pos="1.5 0 0.0" type="box" size="0.75 0.75 0.2" rgba="0.55 0.55 0.65 1"/>
+    </body>
+
+    <!-- Gap terrain group: two platforms with a 0.5m gap between them -->
+    <body name="gap" pos="3.75 -5 0">
+      <geom name="gap1" pos="0 0 0.2" type="box" size="0.75 0.75 0.2" rgba="0.55 0.55 0.65 1" friction="20.0 0.1 0.0001"/>
+      <geom name="gap2" pos="2.0 0 0.2" type="box" size="0.75 0.75 0.2" rgba="0.55 0.55 0.65 1" friction="20.0 0.1 0.0001"/>
+    </body>
+
+    <!-- Concentric stairs: 0.25m treads climb a pyramid, then descend into its center -->
+    <body name="pyramid_stairs" pos="0 -10 0">
+      <!-- Outer pyramid: five 0.15m rises -->
+      <geom name="pyramid_outer_1_left"   pos="-2.625 0 0.075" type="box" size="0.125 2.75 0.075" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_1_right"  pos="2.625 0 0.075"  type="box" size="0.125 2.75 0.075" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_1_front"  pos="0 -2.625 0.075" type="box" size="2.5 0.125 0.075"  rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_1_back"   pos="0 2.625 0.075"  type="box" size="2.5 0.125 0.075"  rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+
+      <geom name="pyramid_outer_2_left"   pos="-2.375 0 0.15" type="box" size="0.125 2.5 0.15" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_2_right"  pos="2.375 0 0.15"  type="box" size="0.125 2.5 0.15" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_2_front"  pos="0 -2.375 0.15" type="box" size="2.25 0.125 0.15" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_2_back"   pos="0 2.375 0.15"  type="box" size="2.25 0.125 0.15" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+
+      <geom name="pyramid_outer_3_left"   pos="-2.125 0 0.225" type="box" size="0.125 2.25 0.225" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_3_right"  pos="2.125 0 0.225"  type="box" size="0.125 2.25 0.225" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_3_front"  pos="0 -2.125 0.225" type="box" size="2.0 0.125 0.225"  rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_3_back"   pos="0 2.125 0.225"  type="box" size="2.0 0.125 0.225"  rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+
+      <geom name="pyramid_outer_4_left"   pos="-1.875 0 0.3" type="box" size="0.125 2.0 0.3" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_4_right"  pos="1.875 0 0.3"  type="box" size="0.125 2.0 0.3" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_4_front"  pos="0 -1.875 0.3" type="box" size="1.75 0.125 0.3" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_4_back"   pos="0 1.875 0.3"  type="box" size="1.75 0.125 0.3" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+
+      <geom name="pyramid_outer_5_left"   pos="-1.625 0 0.375" type="box" size="0.125 1.75 0.375" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_5_right"  pos="1.625 0 0.375"  type="box" size="0.125 1.75 0.375" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_5_front"  pos="0 -1.625 0.375" type="box" size="1.5 0.125 0.375"  rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_outer_5_back"   pos="0 1.625 0.375"  type="box" size="1.5 0.125 0.375"  rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+
+      <!-- Inverted pyramid: five 0.15m drops toward the ground-level center -->
+      <geom name="pyramid_inner_1_left"   pos="-1.375 0 0.3" type="box" size="0.125 1.5 0.3" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_1_right"  pos="1.375 0 0.3"  type="box" size="0.125 1.5 0.3" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_1_front"  pos="0 -1.375 0.3" type="box" size="1.25 0.125 0.3" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_1_back"   pos="0 1.375 0.3"  type="box" size="1.25 0.125 0.3" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+
+      <geom name="pyramid_inner_2_left"   pos="-1.125 0 0.225" type="box" size="0.125 1.25 0.225" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_2_right"  pos="1.125 0 0.225"  type="box" size="0.125 1.25 0.225" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_2_front"  pos="0 -1.125 0.225" type="box" size="1.0 0.125 0.225"  rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_2_back"   pos="0 1.125 0.225"  type="box" size="1.0 0.125 0.225"  rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+
+      <geom name="pyramid_inner_3_left"   pos="-0.875 0 0.15" type="box" size="0.125 1.0 0.15" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_3_right"  pos="0.875 0 0.15"  type="box" size="0.125 1.0 0.15" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_3_front"  pos="0 -0.875 0.15" type="box" size="0.75 0.125 0.15" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_3_back"   pos="0 0.875 0.15"  type="box" size="0.75 0.125 0.15" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+
+      <geom name="pyramid_inner_4_left"   pos="-0.625 0 0.075" type="box" size="0.125 0.75 0.075" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_4_right"  pos="0.625 0 0.075"  type="box" size="0.125 0.75 0.075" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_4_front"  pos="0 -0.625 0.075" type="box" size="0.5 0.125 0.075"  rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pyramid_inner_4_back"   pos="0 0.625 0.075"  type="box" size="0.5 0.125 0.075"  rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+    </body>
+
+    <!-- 20 steps up/down: 0.29m effective depth, 0.175m rise, 3m width -->
+    <body name="bumped_stairs" pos="0 -15 0">
+      <!-- Structural slabs: 0.265m riser spacing plus 0.025m bump overhang -->
+      <geom name="bumped_slab_1" pos="5.5650 0 0.0875" type="box" size="5.5650 1.5 0.0875" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_2" pos="5.5650 0 0.2625" type="box" size="5.3000 1.5 0.0875" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_3" pos="5.5650 0 0.4375" type="box" size="5.0350 1.5 0.0875" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_4" pos="5.5650 0 0.6125" type="box" size="4.7700 1.5 0.0875" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_5" pos="5.5650 0 0.7875" type="box" size="4.5050 1.5 0.0875" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_6" pos="5.5650 0 0.9625" type="box" size="4.2400 1.5 0.0875" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_7" pos="5.5650 0 1.1375" type="box" size="3.9750 1.5 0.0875" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_8" pos="5.5650 0 1.3125" type="box" size="3.7100 1.5 0.0875" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_9" pos="5.5650 0 1.4875" type="box" size="3.4450 1.5 0.0875" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_10" pos="5.5650 0 1.6625" type="box" size="3.1800 1.5 0.0875" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_11" pos="5.5650 0 1.8375" type="box" size="2.9150 1.5 0.0875" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_12" pos="5.5650 0 2.0125" type="box" size="2.6500 1.5 0.0875" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_13" pos="5.5650 0 2.1875" type="box" size="2.3850 1.5 0.0875" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_14" pos="5.5650 0 2.3625" type="box" size="2.1200 1.5 0.0875" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_15" pos="5.5650 0 2.5375" type="box" size="1.8550 1.5 0.0875" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_16" pos="5.5650 0 2.7125" type="box" size="1.5900 1.5 0.0875" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_17" pos="5.5650 0 2.8875" type="box" size="1.3250 1.5 0.0875" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_18" pos="5.5650 0 3.0625" type="box" size="1.0600 1.5 0.0875" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_19" pos="5.5650 0 3.2375" type="box" size="0.7950 1.5 0.0875" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_slab_20" pos="5.5650 0 3.4125" type="box" size="0.5300 1.5 0.0875" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+
+      <!-- Bumps protrude 0.025m and overlap 0.025m into the top 0.04m of every riser -->
+      <geom name="bumped_up_1" pos="0.0000 0 0.1550" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_2" pos="0.2650 0 0.3300" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_3" pos="0.5300 0 0.5050" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_4" pos="0.7950 0 0.6800" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_5" pos="1.0600 0 0.8550" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_6" pos="1.3250 0 1.0300" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_7" pos="1.5900 0 1.2050" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_8" pos="1.8550 0 1.3800" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_9" pos="2.1200 0 1.5550" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_10" pos="2.3850 0 1.7300" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_11" pos="2.6500 0 1.9050" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_12" pos="2.9150 0 2.0800" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_13" pos="3.1800 0 2.2550" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_14" pos="3.4450 0 2.4300" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_15" pos="3.7100 0 2.6050" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_16" pos="3.9750 0 2.7800" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_17" pos="4.2400 0 2.9550" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_18" pos="4.5050 0 3.1300" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_19" pos="4.7700 0 3.3050" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_up_20" pos="5.0350 0 3.4800" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+
+      <geom name="bumped_down_1" pos="6.0950 0 3.4800" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_2" pos="6.3600 0 3.3050" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_3" pos="6.6250 0 3.1300" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_4" pos="6.8900 0 2.9550" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_5" pos="7.1550 0 2.7800" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_6" pos="7.4200 0 2.6050" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_7" pos="7.6850 0 2.4300" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_8" pos="7.9500 0 2.2550" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_9" pos="8.2150 0 2.0800" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_10" pos="8.4800 0 1.9050" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_11" pos="8.7450 0 1.7300" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_12" pos="9.0100 0 1.5550" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_13" pos="9.2750 0 1.3800" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_14" pos="9.5400 0 1.2050" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_15" pos="9.8050 0 1.0300" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_16" pos="10.0700 0 0.8550" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_17" pos="10.3350 0 0.6800" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_18" pos="10.6000 0 0.5050" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_19" pos="10.8650 0 0.3300" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+      <geom name="bumped_down_20" pos="11.1300 0 0.1550" type="box" size="0.0250 1.5 0.02" rgba="0.70 0.45 0.20 1" friction="3.0 0.005 0.0001"/>
+    </body>
+
+    <!-- Five-step stairs with the lower box and moved middle box only -->
+    <body name="short_box_stairs" pos="0 -20 0">
+      <geom name="short_pre1" pos="-0.84 0 0.165" type="box" size="0.41 0.55 0.165" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="short_pre2" pos="-0.09 0 0.245" type="box" size="0.34 0.49 0.095" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+
+      <!-- First five steps from the standard stairs terrain -->
+      <geom name="short_stair1" pos="0.125 0 0.075" type="box" size="0.125 0.8 0.075" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="short_stair2" pos="0.375 0 0.15" type="box" size="0.125 0.8 0.15" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="short_stair3" pos="0.625 0 0.225" type="box" size="0.125 0.8 0.225" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="short_stair4" pos="0.875 0 0.3" type="box" size="0.125 0.8 0.3" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="short_stair5" pos="1.125 0 0.375" type="box" size="0.125 0.8 0.375" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+    </body>
+
+    <!-- Sparse low platforms similar to discrete/grid terrain used in RL -->
+    <body name="discrete_grid" pos="0 -25 0">
+      <geom name="discrete_box_01" pos="0.45 -3.10 0.030" type="box" size="0.46 0.34 0.030" rgba="0.48 0.52 0.48 1" friction="3.0 0.005 0.0001"/>
+      <geom name="discrete_box_02" pos="2.95 -3.25 0.055" type="box" size="0.58 0.42 0.055" rgba="0.55 0.58 0.52 1" friction="3.0 0.005 0.0001"/>
+      <geom name="discrete_box_03" pos="5.35 -3.05 0.070" type="box" size="0.50 0.50 0.070" rgba="0.59 0.61 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="discrete_box_04" pos="0.75 -0.95 0.040" type="box" size="0.42 0.32 0.040" rgba="0.49 0.52 0.48 1" friction="3.0 0.005 0.0001"/>
+      <geom name="discrete_box_05" pos="3.20 -1.05 0.060" type="box" size="0.64 0.36 0.060" rgba="0.56 0.59 0.53 1" friction="3.0 0.005 0.0001"/>
+      <geom name="discrete_box_06" pos="5.65 -0.85 0.025" type="box" size="0.48 0.38 0.025" rgba="0.45 0.48 0.44 1" friction="3.0 0.005 0.0001"/>
+      <geom name="discrete_box_07" pos="0.55 1.25 0.070" type="box" size="0.54 0.44 0.070" rgba="0.60 0.61 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="discrete_box_08" pos="3.05 1.10 0.045" type="box" size="0.44 0.54 0.045" rgba="0.50 0.53 0.49 1" friction="3.0 0.005 0.0001"/>
+      <geom name="discrete_box_09" pos="5.50 1.35 0.035" type="box" size="0.58 0.30 0.035" rgba="0.48 0.51 0.47 1" friction="3.0 0.005 0.0001"/>
+      <geom name="discrete_box_10" pos="0.80 3.45 0.065" type="box" size="0.62 0.40 0.065" rgba="0.57 0.59 0.53 1" friction="3.0 0.005 0.0001"/>
+      <geom name="discrete_box_11" pos="3.30 3.25 0.050" type="box" size="0.48 0.46 0.050" rgba="0.52 0.55 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="discrete_box_12" pos="5.75 3.55 0.030" type="box" size="0.40 0.34 0.030" rgba="0.47 0.50 0.46 1" friction="3.0 0.005 0.0001"/>
+    </body>
+
+    <!-- Stairs group: move/rotate by changing this body's pos/euler -->
+    <body name="stairs" pos="3.0 0.0 0">
+      <!-- Boxes before stairs -->
+      <geom name="pre1" pos="-0.41 0 0.165" type="box" size="0.41 0.55 0.165" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pre2" pos="-0.48 0 0.425" type="box" size="0.34 0.49 0.095" rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="pre3" pos="0.185 0 0.51" type="box" size="0.325 0.35 0.18" rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+
+      <!-- Upstairs: each step 0.25m deep, 0.15m rise -->
+      <geom name="stair1" pos="0.125 0 0.075"   type="box" size="0.125 0.8 0.075"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair2" pos="0.375 0 0.15"   type="box" size="0.125 0.8 0.15"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair3" pos="0.625 0 0.225"   type="box" size="0.125 0.8 0.225"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair4" pos="0.875 0 0.3"   type="box" size="0.125 0.8 0.3"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair5" pos="1.125 0 0.375"   type="box" size="0.125 0.8 0.375"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair6" pos="1.375 0 0.45"   type="box" size="0.125 0.8 0.45"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair7" pos="1.625 0 0.525"   type="box" size="0.125 0.8 0.525"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair8" pos="1.875 0 0.6"   type="box" size="0.125 0.8 0.6"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair9" pos="2.125 0 0.675"   type="box" size="0.125 0.8 0.675"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair10" pos="2.375 0 0.75"   type="box" size="0.125 0.8 0.75"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair11" pos="2.625 0 0.825"   type="box" size="0.125 0.8 0.825"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair12" pos="2.875 0 0.9"   type="box" size="0.125 0.8 0.9"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair13" pos="3.125 0 0.975"   type="box" size="0.125 0.8 0.975"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair14" pos="3.375 0 1.05"   type="box" size="0.125 0.8 1.05"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair15" pos="3.625 0 1.125"   type="box" size="0.125 0.8 1.125"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair16" pos="3.875 0 1.2"   type="box" size="0.125 0.8 1.2"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair17" pos="4.125 0 1.275"   type="box" size="0.125 0.8 1.275"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair18" pos="4.375 0 1.35"   type="box" size="0.125 0.8 1.35"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair19" pos="4.625 0 1.425"   type="box" size="0.125 0.8 1.425"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="stair20" pos="4.875 0 1.5"   type="box" size="0.125 0.8 1.5"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+
+      <!-- Landing platform at top (0.5m deep) -->
+      <geom name="landing" pos="5.25 0 1.5"    type="box" size="0.3 0.8 1.5"    rgba="0.45 0.45 0.45 1" friction="3.0 0.005 0.0001"/>
+
+      <!-- Downstairs: mirror of upstairs, descending back to ground -->
+      <geom name="down1"  pos="5.625 0 1.5"   type="box" size="0.125 0.8 1.5"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down2"  pos="5.875 0 1.425"   type="box" size="0.125 0.8 1.425"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down3"  pos="6.125 0 1.35"   type="box" size="0.125 0.8 1.35"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down4"  pos="6.375 0 1.275"   type="box" size="0.125 0.8 1.275"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down5"  pos="6.625 0 1.2"   type="box" size="0.125 0.8 1.2"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down6"  pos="6.875 0 1.125"   type="box" size="0.125 0.8 1.125"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down7"  pos="7.125 0 1.05"   type="box" size="0.125 0.8 1.05"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down8"  pos="7.375 0 0.975"   type="box" size="0.125 0.8 0.975"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down9"  pos="7.625 0 0.9"   type="box" size="0.125 0.8 0.9"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down10"  pos="7.875 0 0.825"   type="box" size="0.125 0.8 0.825"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down11"  pos="8.125 0 0.75"   type="box" size="0.125 0.8 0.75"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down12"  pos="8.375 0 0.675"   type="box" size="0.125 0.8 0.675"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down13"  pos="8.625 0 0.6"   type="box" size="0.125 0.8 0.6"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down14"  pos="8.875 0 0.525"   type="box" size="0.125 0.8 0.525"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down15"  pos="9.125 0 0.45"   type="box" size="0.125 0.8 0.45"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down16"  pos="9.375 0 0.375"   type="box" size="0.125 0.8 0.375"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down17"  pos="9.625 0 0.3"   type="box" size="0.125 0.8 0.3"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down18"  pos="9.875 0 0.225"   type="box" size="0.125 0.8 0.225"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down19"  pos="10.125 0 0.15"   type="box" size="0.125 0.8 0.15"   rgba="0.55 0.55 0.55 1" friction="3.0 0.005 0.0001"/>
+      <geom name="down20"  pos="10.375 0 0.075"   type="box" size="0.125 0.8 0.075"   rgba="0.50 0.50 0.50 1" friction="3.0 0.005 0.0001"/>
+    </body>
+  </worldbody>
+</mujoco>
