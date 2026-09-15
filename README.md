@@ -10,6 +10,16 @@ This is a JEPA-based mapless perceptive locomotion for quadrupedal robot (on Uni
 
 <img src="images/hardware.JPG" alt="Description" width="300">
 
+### BibTex Citation
+```
+@ARTICLE{yuan2026jeplo,
+  title={{JEPLO: Joint-Embedding Predictive Learning for LiDAR-Based Legged Locomotion}}, 
+  author={Yuan, Qihao and Qiu, Yixuan and Cao, Ziyu and Cao, Ming and Li, Kailai},
+  journal={arXiv preprint arXiv:2609.15770},
+  year={2026}
+}
+```
+
 ## Environment Setup
 
 First create a conda envirnoment, install IsaacLab and IsaacSim:
