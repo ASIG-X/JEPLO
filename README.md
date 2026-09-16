@@ -19,6 +19,7 @@ This is a JEPA-based mapless perceptive locomotion for quadrupedal robot (on Uni
   year={2026}
 }
 ```
+Feel free to open an issue or contact us if you encoutner any problem using the code!
 
 ## Environment Setup
 
