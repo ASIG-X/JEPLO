@@ -96,9 +96,6 @@ class OnPolicyRunnerTeacherCTS(OnPolicyRunnerTeacher):
 
         self.num_steps_per_env = self.cfg["num_steps_per_env"]
         self.save_interval = self.cfg["save_interval"]
-        self.eval_interval = int(self.cfg.get("eval_interval", 1000))
-        if self.eval_interval < 0:
-            raise ValueError("eval_interval must be non-negative.")
         self.onnx_test_samples = int(self.cfg.get("onnx_test_samples", 10))
         if self.onnx_test_samples < 1:
             raise ValueError("onnx_test_samples must be positive.")
@@ -366,12 +363,9 @@ class OnPolicyRunnerTeacherCTS(OnPolicyRunnerTeacher):
             self.current_learning_iteration = it + 1
             if self.log_dir is not None and not self.disable_logs:
                 self.log(locals(), wandb_run=run)
-                if it % self.save_interval == 0:
-                    self.save(os.path.join(self.log_dir, f"model_{it}.pt"))
 
-            completed_iterations = it + 1
-            if self.eval_interval > 0 and completed_iterations % self.eval_interval == 0:
-                self._run_periodic_evaluation(completed_iterations, obs, depth_stack, wandb_run=run)
+            if it % self.save_interval == 0:
+                self._save_checkpoint_and_export(f"model_{it}.pt", obs, depth_stack)
 
             ep_infos.clear()
             if it == start_iter and not self.disable_logs:
@@ -383,9 +377,9 @@ class OnPolicyRunnerTeacherCTS(OnPolicyRunnerTeacher):
                     launch_cwd=self.launch_cwd,
                 )
 
-        if self.log_dir is not None and not self.disable_logs and self.current_learning_iteration > 0:
+        if self.current_learning_iteration > 0:
             last_completed_iteration = self.current_learning_iteration - 1
-            self.save(os.path.join(self.log_dir, f"model_{last_completed_iteration}.pt"))
+            self._save_checkpoint_and_export(f"model_{last_completed_iteration}.pt", obs, depth_stack)
 
         run.finish()
 
@@ -507,37 +501,33 @@ class OnPolicyRunnerTeacherCTS(OnPolicyRunnerTeacher):
         self.estimator_storage.clear()
         return {f"jepa_{k}": sum(v) / len(v) for k, v in metrics.items()}
 
-    def _run_periodic_evaluation(self, completed_iterations: int, obs, depth_stack, wandb_run=None):
-        """Export and evaluate the current policy on the logging process."""
-        evaluation_error = None
+    def _save_checkpoint_and_export(self, filename: str, obs, depth_stack):
+        """Save a checkpoint and matching ONNX models and samples on the logging process."""
+        export_error = None
         if self.log_dir is not None and not self.disable_logs:
-            iteration_dir = f"iteration_{completed_iterations:06d}"
             model_dir = os.path.join(self.log_dir, "exported")
-            video_dir = os.path.join(self.log_dir, "evaluation_videos", iteration_dir)
 
             try:
+                self.save(os.path.join(self.log_dir, filename))
                 self._clear_previous_onnx_export(model_dir)
                 self.export_policy_onnx(model_dir)
                 self._export_onnx_test_cases(model_dir, obs, depth_stack)
-                from go2_sync_eval import evaluate
-
-                evaluate(model_dir, video_dir, wandb_run=wandb_run)
             except Exception as exc:
-                evaluation_error = exc
+                export_error = exc
             finally:
                 # ONNX export switches the live models to eval mode.
                 self.train_mode()
 
         if self.is_distributed:
-            evaluation_failed = torch.tensor(
-                int(evaluation_error is not None), dtype=torch.int32, device=self.device
+            export_failed = torch.tensor(
+                int(export_error is not None), dtype=torch.int32, device=self.device
             )
-            torch.distributed.broadcast(evaluation_failed, src=0)
-            if evaluation_failed.item() and evaluation_error is None:
-                evaluation_error = RuntimeError("Periodic policy evaluation failed on rank 0.")
+            torch.distributed.broadcast(export_failed, src=0)
+            if export_failed.item() and export_error is None:
+                export_error = RuntimeError("Checkpoint save or ONNX export failed on rank 0.")
 
-        if evaluation_error is not None:
-            raise evaluation_error
+        if export_error is not None:
+            raise export_error
 
     @staticmethod
     def _clear_previous_onnx_export(model_dir: str):

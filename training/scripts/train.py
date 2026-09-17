@@ -51,12 +51,6 @@ parser.add_argument("--student_encoder_learning_rate", type=float, default=2.0e-
 parser.add_argument("--student_encoder_loss_coef", type=float, default=1.0)
 parser.add_argument("--disable_student_encoder_loss", action="store_true")
 parser.add_argument(
-    "--eval_interval",
-    type=int,
-    default=1000,
-    help="Export ONNX models and run go2_sync_eval after this many completed iterations. Set to 0 to disable.",
-)
-parser.add_argument(
     "--onnx_test_samples",
     type=int,
     default=10,
@@ -135,8 +129,6 @@ def main():
         raise ValueError("--student_env_ratio must be in [0, 1].")
     if not 0 <= args_cli.warmup_iters[0] <= args_cli.warmup_iters[1]:
         raise ValueError("--warmup_iters must satisfy 0 <= TEACHER_ONLY_END <= FULL_CTS_START.")
-    if args_cli.eval_interval < 0:
-        raise ValueError("--eval_interval must be non-negative.")
     if args_cli.onnx_test_samples < 1:
         raise ValueError("--onnx_test_samples must be positive.")
     student_encoder_loss_coef = 0.0 if args_cli.disable_student_encoder_loss else args_cli.student_encoder_loss_coef
@@ -178,7 +170,6 @@ def main():
     train_cfg["algorithm"]["warmup_iters"] = args_cli.warmup_iters
     train_cfg["algorithm"]["student_encoder_learning_rate"] = args_cli.student_encoder_learning_rate
     train_cfg["algorithm"]["student_encoder_loss_coef"] = student_encoder_loss_coef
-    train_cfg["eval_interval"] = args_cli.eval_interval
     train_cfg["onnx_test_samples"] = args_cli.onnx_test_samples
     train_cfg["launch_command"] = launch_command
     train_cfg["launch_cwd"] = launch_cwd
